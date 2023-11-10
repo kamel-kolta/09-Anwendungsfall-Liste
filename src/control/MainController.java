@@ -23,9 +23,31 @@ public class MainController {
      * @return String-Array mit den Familiennamen
      */
     public String[] showShelfContent(int index){
-        List<File> list = allShelves[index];
+
         //TODO 03: Ausgabe der Inhalte
-        return new String[]{"Platzhalter00", "Platzhalter01", "Platzhalter02"};
+        //Länge der Liste herausfinden
+        if(index>=0 && index<allShelves.length) {
+            List<File> list = allShelves[index];
+            if(!list.isEmpty()) {
+                int length = 0;
+                list.toFirst();
+                while (list.hasAccess()) {
+                    list.next();
+                    length++;
+                }
+
+                //Namen der Personen ins Array kopieren
+                String[] output = new String[length];
+                list.toFirst();
+                for (int i = 0; i < length; i++) {
+                    output[i] = list.getContent().getName();
+                    list.next();
+                }
+
+                return output;
+            }
+        }
+        return new String[0];
     }
 
     /**
@@ -46,6 +68,10 @@ public class MainController {
      */
     public boolean appendFromTo(int from, int to){
         //TODO 04: Die Objekte einer Liste an eine andere anhängen und dabei die erste Liste leeren.
+        if((from==0 || from==1) && (to==0 || to==1)){
+            allShelves[to].concat(allShelves[from]);
+            return true;
+        }
         return false;
     }
 
@@ -58,6 +84,11 @@ public class MainController {
      */
     public boolean appendANewFile(int index, String name, String phoneNumber){
         //TODO 02: Hinzufügen einer neuen Akte am Ende der Liste.
+        if(index>=0 && index<allShelves.length && name!=null && phoneNumber!=null) {
+            File file = new File(name, phoneNumber);
+            allShelves[index].append(file);
+            return true;
+        }
         return false;
     }
 
@@ -80,6 +111,19 @@ public class MainController {
      */
     public int[] search(String name){
         //TODO 05: Suchen in einer Liste.
+        for(int i=0; i< allShelves.length; i++){
+            allShelves[i].toFirst();
+            int count=0;
+            while(allShelves[i].hasAccess()){
+                //if(allShelves[i].getContent()!=null){
+                if(allShelves[i].getContent().getName().equals(name)){
+                    return new int[]{i,count};
+                }
+                count++;
+                allShelves[i].next();
+                //}
+            }
+        }
         return new int[]{-1,-1};
     }
 
@@ -89,10 +133,24 @@ public class MainController {
      * @param fileIndex Aktennummer, die entfernt werden soll.
      * @return String-Array der Länge 2. Index 0 = Name, Indedx 1 = Telefonnummer.
      */
-    public String[] remove(int shelfIndex, int fileIndex){
+    public String[] remove(int shelfIndex, int fileIndex) {
         //TODO 06: Entfernen aus einer Liste.
-        return new String[]{"Nicht vorhanden","Nicht vorhanden"};
+        String[] result = new String[]{"Nicht vorhanden", "Nicht vorhanden"};
+        List<File> list = allShelves[shelfIndex];
+        list.toFirst();
+        for (int i = 0; i < fileIndex ; i++) {
+            list.next();
+
+        }
+
+            result[0] = list.getContent().getName();
+            result[1] = list.getContent().getPhoneNumber();
+            list.remove();
+
+
+        return result;
     }
+
 
     /**
      * Es werden 14 zufällige Akten angelegt und zufällig den Regalen hinzugefügt.
