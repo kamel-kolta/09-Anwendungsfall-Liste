@@ -66,6 +66,7 @@ public class MainController {
      * @param to Regalnummer, in das die Akten gestellt werden.
      * @return true, falls alles funktionierte, sonst false.
      */
+    // Test comment
     public boolean appendFromTo(int from, int to){
         //TODO 04: Die Objekte einer Liste an eine andere anhängen und dabei die erste Liste leeren.
         if((from==0 || from==1) && (to==0 || to==1)){
